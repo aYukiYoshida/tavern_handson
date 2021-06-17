@@ -1,0 +1,20 @@
+---
+
+test_name: Test server
+
+includes:
+  - !include common.yaml
+
+stages:
+  - name: Test server works
+    request:
+      url: "{service.protocol:s}://{service.host:s}:{service.port:d}"
+      method: GET
+      headers:
+        Accept: "*/*"
+    response:
+      status_code: 200
+      headers:
+        content-type: application/json
+      json:
+        message: "It works !!"

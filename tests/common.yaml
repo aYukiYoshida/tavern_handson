@@ -1,0 +1,9 @@
+---
+name: test includes
+description: used for testing against local server
+
+variables:
+  service:
+    protocol: http
+    host: flask-app
+    port: 5000

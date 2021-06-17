@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  flask-app:
+    image: flask-app
+    build:
+      context: ./
+      dockerfile: ./docker/flask.dockerfile
+    container_name: flask-app
+    volumes:
+      - ./src:/usr/local/src
+    ports:
+      - "5000:5000" # used by Flask
+    environment:
+      - PORT=5000
+    tty: true
+    entrypoint: "python /usr/local/src/server.py"
+  tavern:
+    image: tavern
+    build:
+      context: ./
+      dockerfile: ./docker/tavern.dockerfile
+    depends_on:
+      - flask-app
+    container_name: tavern
+    volumes:
+      - ./tests:/usr/local/tavern/tests
+    tty: true

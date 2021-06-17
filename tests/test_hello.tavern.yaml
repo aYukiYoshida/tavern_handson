@@ -1,0 +1,33 @@
+---
+
+test_name: Test authenticated /hello
+
+includes:
+  - !include common.yaml
+  - !include components/authentication.yaml
+
+marks:
+  - usefixtures:
+    - access_token
+
+stages:
+  - name: Unauthenticated /hello
+    request:
+      url: "{service.protocol:s}://{service.host:s}:{service.port:d}/hello/{user.username}"
+      method: GET
+    response:
+      status_code: 401
+
+  - name: Authenticated /hello
+    request:
+      url: "{service.protocol:s}://{service.host:s}:{service.port:d}/hello/{user.username}"
+      method: GET
+      headers:
+        Content-Type: application/json
+        Authorization: "Bearer {access_token}"
+    response:
+      status_code: 200
+      headers:
+        content-type: application/json
+      json:
+        data: "Hello, {user.username}"
